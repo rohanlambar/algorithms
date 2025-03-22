@@ -12,6 +12,8 @@ using namespace std;
 // 4->{6,2},{3,10}
 // 5->{6,6},{3,15}
 // 6->{5,6},{4,2}
+// Time complexity = O((V + E) log V)
+// space complexity = O(V)
 vector<int> dijkstraAlgorithm(int source, vector<vector<pair<int, int>>> &graph)
 {
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap;
@@ -37,7 +39,7 @@ vector<int> dijkstraAlgorithm(int source, vector<vector<pair<int, int>>> &graph)
                 minHeap.push({distance[nextNeighbour], nextNeighbour});
             }
         }
-        }
+    }
     return distance;
 }
 int main()
