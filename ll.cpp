@@ -62,21 +62,63 @@ void insertInMiddle(Node *head, int index, int value)
     newNode->next = curr->next;
     curr->next = newNode;
 }
-void reverse(Node *head)
+void deleteNodeByPos(Node *head, int index)
 {
     if (!head)
         return;
+    Node *curr = head;
+    for (int i = 0; i < index; i++)
+    {
+
+        if (curr->next)
+            curr = curr->next;
+    }
+    if (curr->next)
+        curr->next = curr->next->next;
+}
+void deleteNodeByVal(Node *head, int value)
+{
+    if (!head)
+        return;
+    Node *curr = head;
+    while (curr->next != NULL && curr->next->value != value)
+        curr = curr->next;
+    if (curr->next)
+        curr->next = curr->next->next;
+}
+void reverseLL(Node *head)
+{
     Node *prev = NULL;
     Node *curr = head->next;
-    while (curr->next)
+    while (curr)
     {
-        Node *further = curr->next;
+        Node *front = curr->next;
         curr->next = prev;
         prev = curr;
-        curr = further;
+        curr = front;
     }
-    curr->next = prev;
-    head->next = curr;
+    head->next = prev;
+}
+void printReverse(Node *node)
+{
+    if (!node)
+        return;
+    printReverse(node->next);
+    cout << node->value << " ";
+}
+bool detectCycle(Node *node)
+{
+    Node *slow = node;
+    Node *fast = node;
+    while (fast && fast->next)
+    {
+
+        slow = slow->next;
+        fast = fast->next->next;
+        if (fast == slow)
+            return true;
+    }
+    return false;
 }
 int main()
 {
@@ -89,21 +131,41 @@ int main()
         prev->next = newNode;
         prev = newNode;
     }
-    cout << "initial linkedlist  ";
-    ;
+    cout << "initial linkedlist  : ";
+
     printLL(head);
 
     insertAtHead(head, 12);
-    cout << "insert 12 at head ";
+    cout << "insert 12 at head : ";
     printLL(head);
     insertAtTail(head, 25);
-    cout << "insert 25 at end ";
+    cout << "insert 25 at end : ";
     printLL(head);
-    insertInMiddle(head, 10, 100);
-    cout << "insert 100 at index 0 (0-based index)  ";
+    insertInMiddle(head, 0, 100);
+    cout << "insert 100 at index 0 (0-based index)  : ";
     printLL(head);
-    reverse(head);
-    cout << "reversing a LL  ";
+    deleteNodeByVal(head, 25);
+    cout << "delete by value 25 : ";
     printLL(head);
+    deleteNodeByPos(head, 2);
+    cout << "delete by position 2 : ";
+    printLL(head);
+    reverseLL(head);
+    cout << "reverse LL : ";
+    printLL(head);
+    cout << "printing reverse LL: ";
+    printReverse(head->next);
+    cout << endl;
+    cout << "does cycle exist " << detectCycle(head);
+    Node *first = new Node(1);
+    Node *second = new Node(3);
+    Node *third = new Node(4);
+
+    first->next = second;
+    second->next = third;
+    third->next = second;
+    cout << endl;
+    cout << "detecting cycle in new list ";
+    cout << detectCycle(first);
     return 0;
 }
